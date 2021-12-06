@@ -1,81 +1,103 @@
-import sys
-import shutil
-import pysinsy
-import librosa
-import xml.etree.ElementTree as ET
-import soundfile as sf
-import subprocess
+"""
+一曲分だけラベル生成したい場合はこちらのスクリプトを動かして下さい。
+※管理者権限でないと動かない場合があります
+
+使い方 :
+python ./audio2lab.py [入力ファイル名] [出力ファイル名] [モード(mono / full)]
+※入力ファイル名は ./in フォルダ内から選んでください。
+  また、入力ファイルの .wavと.musicxmlは同じ名前にしてください。
+"""
+
+import sys  # コマンド変数用
+import os  # ファイル作成操作用
+import shutil  # ファイル移動操作用
+import pysinsy  # Sinsyラベル生成用
+import librosa  # ダウンサンプリング用
+import soundfile as sf  # ダウンサンプリング書き出し用
+import xml.etree.ElementTree as ET  # musicXML読み込み用
+import subprocess  # perlプログラム実行用
 
 sinsy = pysinsy.Sinsy()
 input_audio = "./in/" + sys.argv[1] + ".wav"
 input_xml = "./in/" + sys.argv[1] + ".musicxml"
 temp_Slab = "./temp/S" + sys.argv[2] + ".lab"
+temp_SFlab = "./temp/SF" + sys.argv[2] + ".lab"
 temp_Jlab = "./temp/J" + sys.argv[2] + ".lab"
 temp_JlabC = "./temp/convert/J" + sys.argv[2] + "C.lab"
 raw_Jlab = "./Julius/wav/" + sys.argv[2] + ".lab"
 temp_audio = "./Julius/wav/" + sys.argv[2] + ".wav"
 temp_text = "./Julius/wav/" + sys.argv[2] + ".txt"
 output_filename = "./out/" + sys.argv[2] + ".lab"
+log_file = "./Julius/wav/" + sys.argv[1] + ".log"
+log_dir = "./Julius/log/" + sys.argv[2] + ".log"
 mode = sys.argv[3]
 
 
+# ラベル生成フェーズ
 class make_labels:
-    def make(self):
+    def make(self):                     # クラス総合
         self.check_input()
         self.sinsy_make_lab()
+        print("Reading score file...")
         self.julius_make_lab()
 
-    def check_input(self):
+    def check_input(self):              # コマンド変数が正しいか、入力ファイル形式は正しいか確認
         if len(sys.argv) != 4:
             sys.exit("xml2lab.py [input_filename] [output_filename] [mode]")
 
         assert sinsy.setLanguages("j", pysinsy.get_default_dic_dir())
         assert sinsy.loadScoreFromMusicXML(input_xml)
 
-    def sinsy_make_lab(self):
-        if mode == "mono":
+    def sinsy_make_lab(self):           # Sinsyラベルを生成
+        is_mono = True
+        if mode == "mono":              # モノラベルデータの時
             print("Make mono labels for train")
-            is_mono = True
-            labels = sinsy.createLabelData(is_mono, 1, 1).getData()
 
-            with open(temp_Slab, "w") as f:
+        labels = sinsy.createLabelData(is_mono, 1, 1).getData()
+        with open(temp_Slab, "w") as f:
+            for l in labels:
+                f.write(str(l) + "\n")
+
+        if mode == "full":              # フルラベルデータの時
+            is_mono = False
+            print("Make full labels for train")
+            labels = sinsy.createLabelData(is_mono, 1, 1).getData()
+            with open(temp_SFlab, "w") as f:
                 for l in labels:
                     f.write(str(l) + "\n")
 
-    def julius_make_lab(self):
-        y, sr = librosa.core.load(input_audio, sr=16000, mono=True)
-        sf.write(temp_audio, y, sr, subtype="PCM_16")
+    def julius_make_lab(self):          # Juliusラベルを生成
+        y, sr = librosa.core.load(input_audio, sr=16000, mono=True)     # ダウンサンプリング
+        sf.write(temp_audio, y, sr, subtype="PCM_16")                   # ダウンサンプリングを保存
         self.read_XML()
 
+        print("Making Julius label...")
         subprocess.run(["perl", "./segment_julius.pl"], cwd="./Julius")
         shutil.move(raw_Jlab, temp_Jlab)
+        shutil.copy(log_file, log_dir)
 
-    def read_XML(self):
-        tree = ET.parse(input_xml)  # 入力楽譜ファイル
+    def read_XML(self):                 # 楽譜ファイル読み込み&歌詞取り込み
+        tree = ET.parse(input_xml)      # 入力楽譜ファイル
         root = tree.getroot()
-        measure_count = 0
         lyrics = []
 
-        for _ in root.iter("measure"):  # 小節数カウント
-            measure_count = measure_count + 1
-
-        for i in range(0, measure_count, 1):
-            measure = root[3][i]  # 小節区切り
-            for child in measure:
-                if child.find('lyric') is not None:
-                    lyrics.append(child.find('lyric').find('text').text)
+        for _ in root.iter("lyric"):
+            if _.find("text") is not None:
+                lyrics.append(_.find("text").text)
 
         print('Lyrics : ' + ','.join(lyrics))
-        with open(temp_text, "w", encoding='utf-8') as f:
+        with open(temp_text, "w", encoding='utf-8') as f:               # 歌詞データを保存
             f.write("".join(lyrics))
 
 
+# ラベル修正フェーズ
 class merge_labels:
-    def merge(self):
+    def merge(self):                    # クラス総合
+        print("Merging labels...")
         self.julius2sinsy()
         self.merge2sinsy()
 
-    def julius2sinsy(self):
+    def julius2sinsy(self):             # Juliusの時間単位をSinsyの時間単位に合わせる（10msから100nsへ）
         Jstart_time = []
         Jend_time = []
         phoneme = []
@@ -96,10 +118,12 @@ class merge_labels:
                 end = int(Send_time[i] * 10000000)
                 f.write(str(start) + " " + str(end) + " " + phoneme[i])
 
-    def merge2sinsy(self):
+    def merge2sinsy(self):              # 変換後のJulius音素時間をSinsyの音素時間と置き換える（音素はSinsy基準）
         Sstart_time = []
         Send_time = []
         Sphoneme = []
+
+        SFphoneme = []
 
         Jstart_time = []
         Jend_time = []
@@ -108,55 +132,86 @@ class merge_labels:
 
         final = []
 
-        with open(temp_Slab, 'r', encoding='utf-8') as f:  # ファイルを開く
-            for line in f.readlines():  # 行をすべて読み込んで1行ずつfor文で回す
-                split = line.split(' ')  # 行を半角スペースで分割する
+        with open(temp_Slab, 'r', encoding='utf-8') as f:
+            for line in f.readlines():
+                split = line.split(' ')
                 Sstart_time.append(split[0])
                 Send_time.append(split[1])
                 Sphoneme.append(split[2])
 
-        with open(temp_JlabC, 'r', encoding='utf-8') as f:  # ファイルを開く
-            for line in f.readlines():  # 行をすべて読み込んで1行ずつfor文で回す
-                split = line.split(' ')  # 行を半角スペースで分割する
+        if mode == "full":
+            with open(temp_SFlab, 'r', encoding='utf-8') as f:
+                for line in f.readlines():
+                    split = line.split(' ')
+                    SFphoneme.append(split[2])
+
+        with open(temp_JlabC, 'r', encoding='utf-8') as f:
+            for line in f.readlines():
+                split = line.split(' ')
                 Jstart_time.append(split[0])
                 Jend_time.append(split[1])
                 Jphoneme.append(split[2])
 
-        for i in range(0, len(Sphoneme)):
-            print(Sphoneme[i] + Jphoneme[j])
-            if Sphoneme[i] == Jphoneme[j]:
-                final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + Sphoneme[i])
+        for i in range(0, len(Sphoneme)):   # JuliusとSinsyの音素ラベルの対応を取りながら置き換え
+            # print(Sphoneme[i] + Jphoneme[j])
+            if Sphoneme[i] == Jphoneme[j] or \
+                    Sphoneme[i] == "a\n" and Jphoneme[j] == "a:\n" or \
+                    Sphoneme[i] == "i\n" and Jphoneme[j] == "i:\n" or \
+                    Sphoneme[i] == "u\n" and Jphoneme[j] == "u:\n" or \
+                    Sphoneme[i] == "e\n" and Jphoneme[j] == "e:\n" or \
+                    Sphoneme[i] == "o\n" and Jphoneme[j] == "o:\n" or \
+                    Sphoneme[i] == "cl\n" and Jphoneme[j] == "q\n":                                     # 母音促音ラベル
+                if mode == "full":
+                    final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + SFphoneme[i])
+                elif mode == "mono":
+                    final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + Sphoneme[i])
                 j = j + 1
-            elif Sphoneme[i] == "a\n" and Jphoneme[j] == "a:\n":
-                final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + Sphoneme[i])
+            elif Sphoneme[i] == "pau\n" and Jphoneme[j] == "silB\n" or Jphoneme == "silE\n":           # 無音ラベル（対称）
+                if mode == "full":
+                    final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + SFphoneme[i])
+                elif mode == "mono":
+                    final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + Sphoneme[i])
                 j = j + 1
-            elif Sphoneme[i] == "i\n" and Jphoneme[j] == "i:\n":
-                final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + Sphoneme[i])
-                j = j + 1
-            elif Sphoneme[i] == "u\n" and Jphoneme[j] == "u:\n":
-                final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + Sphoneme[i])
-                j = j + 1
-            elif Sphoneme[i] == "e\n" and Jphoneme[j] == "e:\n":
-                final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + Sphoneme[i])
-                j = j + 1
-            elif Sphoneme[i] == "o\n" and Jphoneme[j] == "o:\n":
-                final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + Sphoneme[i])
-                j = j + 1
-
-            elif Sphoneme[i] == "pau\n" and Jphoneme[j] == "silB\n" or Jphoneme == "silE\n":
-                final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + Sphoneme[i])
-                j = j + 1
-            elif Sphoneme[i] == "pau\n" and Jphoneme[j] != "silB\n" or Jphoneme != "silE\n":
+            elif Sphoneme[i] == "pau\n" and Jphoneme[j] != "silB\n" or Jphoneme != "silE\n":           # 無音ラベル（非対称）
                 sec = int(Send_time[i]) - int(Sstart_time[i])
                 start = int(Jend_time[j - 1]) - sec
                 end = Jstart_time[j]
-                final[i - 1] = Jstart_time[j - 1] + " " + str(start) + " " + Sphoneme[i - 1]
-                final.append(str(start) + " " + end + " " + Sphoneme[i])
-                print("pau skip")
+                if mode == "full":
+                    final[i - 1] = Jstart_time[j - 1] + " " + str(start) + " " + SFphoneme[i - 1]
+                    final.append(str(start) + " " + end + " " + SFphoneme[i])
+                elif mode == "mono":
+                    final[i - 1] = Jstart_time[j - 1] + " " + str(start) + " " + Sphoneme[i - 1]
+                    final.append(str(start) + " " + end + " " + Sphoneme[i])
+            elif Sphoneme[i] == "br\n":                                                                # 息継ぎラベル
+                sec = int(Send_time[i]) - int(Sstart_time[i])
+                start = int(Jend_time[j - 1]) - sec
+                end = Jstart_time[j]
+                if mode == "full":
+                    final[i - 1] = Jstart_time[j - 1] + " " + str(start) + " " + SFphoneme[i - 1]
+                    final.append(str(start) + " " + end + " " + SFphoneme[i])
+                elif mode == "mono":
+                    final[i - 1] = Jstart_time[j - 1] + " " + str(start) + " " + Sphoneme[i - 1]
+                    final.append(str(start) + " " + end + " " + Sphoneme[i])
+            elif i != len(Sphoneme) and i != 0:
+                if Sphoneme[i] == "sil\n" and Sphoneme[i + 1] == "sil\n":                              # 一小節以上の無音
+                    if mode == "full":
+                        final.append(str(Sstart_time[i]) + " " + str(Send_time[i]) + " " + SFphoneme[i])
+                    elif mode == "mono":
+                        final.append(str(Sstart_time[i]) + " " + str(Send_time[i]) + " " + Sphoneme[i])
+                elif Sphoneme[i] == "pau\n" and Sphoneme[i - 1] == "sil\n" and Jphoneme[j] == "silB\n":
+                    if mode == "full":
+                        final.append(str(Sstart_time[i]) + " " + str(Jend_time[i]) + " " + SFphoneme[i])
+                    elif mode == "mono":
+                        final.append(str(Sstart_time[i]) + " " + str(Jend_time[i]) + " " + Sphoneme[i])
+                    j = j + 1
 
-        with open(output_filename, 'w', encoding='utf-8') as f:
+        with open(output_filename, 'w', encoding='utf-8') as f:     # 最終結果を保存
             for i in range(0, len(Sphoneme)):
                 f.write(final[i])
+            print("Done")
+
+        shutil.rmtree("./Julius/wav/")
+        os.mkdir("./Julius/wav/")
 
 
 make = make_labels()
