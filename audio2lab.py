@@ -36,6 +36,8 @@ mode = sys.argv[3]
 # ラベル生成フェーズ
 class make_labels:
     def make(self):                     # クラス総合
+        shutil.rmtree("./Julius/wav/")
+        os.mkdir("./Julius/wav/")
         self.check_input()
         self.sinsy_make_lab()
         print("Reading score file...")
@@ -166,6 +168,17 @@ class merge_labels:
                 elif mode == "mono":
                     final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + Sphoneme[i])
                 j = j + 1
+            elif Sphoneme[i] == "sil\n" and Jphoneme[j] == "silB\n":                                   # 無音ラベル（開始）
+                if mode == "full":
+                    final.append(str(Sstart_time[i]) + " " + str(Send_time[i]) + " " + SFphoneme[i])
+                elif mode == "mono":
+                    final.append(str(Sstart_time[i]) + " " + str(Send_time[i]) + " " + Sphoneme[i])
+            elif Sphoneme[i] == "pau\n" and Sphoneme[i-1] == "sil\n" or Jphoneme == "silB\n":           # 無音ラベル（連続）
+                if mode == "full":
+                    final.append(str(Send_time[i-1]) + " " + str(Jend_time[j]) + " " + SFphoneme[i])
+                elif mode == "mono":
+                    final.append(str(Send_time[i-1]) + " " + str(Jend_time[j]) + " " + Sphoneme[i])
+                j = j + 1
             elif Sphoneme[i] == "pau\n" and Jphoneme[j] == "silB\n" or Jphoneme == "silE\n":           # 無音ラベル（対称）
                 if mode == "full":
                     final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + SFphoneme[i])
@@ -192,13 +205,14 @@ class merge_labels:
                 elif mode == "mono":
                     final[i - 1] = Jstart_time[j - 1] + " " + str(start) + " " + Sphoneme[i - 1]
                     final.append(str(start) + " " + end + " " + Sphoneme[i])
-            elif i != len(Sphoneme) and i != 0:
+            elif i != len(Sphoneme):
                 if Sphoneme[i] == "sil\n" and Sphoneme[i + 1] == "sil\n":                              # 一小節以上の無音
                     if mode == "full":
                         final.append(str(Sstart_time[i]) + " " + str(Send_time[i]) + " " + SFphoneme[i])
                     elif mode == "mono":
                         final.append(str(Sstart_time[i]) + " " + str(Send_time[i]) + " " + Sphoneme[i])
-                elif Sphoneme[i] == "pau\n" and Sphoneme[i - 1] == "sil\n" and Jphoneme[j] == "silB\n":
+            elif i != 0:
+                if Sphoneme[i] == "pau\n" and Sphoneme[i - 1] == "sil\n" and Jphoneme[j] == "silB\n":
                     if mode == "full":
                         final.append(str(Sstart_time[i]) + " " + str(Jend_time[i]) + " " + SFphoneme[i])
                     elif mode == "mono":
@@ -209,9 +223,6 @@ class merge_labels:
             for i in range(0, len(Sphoneme)):
                 f.write(final[i])
             print("Done")
-
-        shutil.rmtree("./Julius/wav/")
-        os.mkdir("./Julius/wav/")
 
 
 make = make_labels()
