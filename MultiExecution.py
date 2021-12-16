@@ -15,6 +15,7 @@ counter = 1
 input_dir = "./in/"
 input_files = []
 mode = sys.argv[1]
+error = 0
 
 for file_name in os.listdir(input_dir):
     file_path = os.path.join(input_dir, file_name)
@@ -26,6 +27,17 @@ print(input_files)
 
 for i in range(0, len(input_files)):
     print("\n**************************\n" + \
-          "Progress " + str(i+1) + " / " + str(len(input_files)) + \
+          "Progress " + str(i + 1) + " / " + str(len(input_files)) + \
           "\n**************************\n")
-    subprocess.run(["python", "./audio2lab.py", input_files[i], input_files[i], mode], cwd="./")
+    try:
+        subprocess.check_output(["python", "./audio2lab.py", input_files[i], input_files[i], mode], cwd="./")
+    except subprocess.CalledProcessError as e:
+        error += 1
+        print("\n**************************\n" + \
+              "           ERROR!! " + \
+              "\n**************************\n")
+
+print("\n**************************\n" + \
+      "Complete !! \n" + \
+      "ERROR : " + str(error) + " / " + str(len(input_files)) + \
+      "\n**************************\n")
