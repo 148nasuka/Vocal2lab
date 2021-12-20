@@ -1,4 +1,4 @@
-# Vudio2lab
+# Vocal2lab
 NNSVS向けの教師データ制作のラベル作成支援ツールです。
 
 <h1>準備中</h1>
