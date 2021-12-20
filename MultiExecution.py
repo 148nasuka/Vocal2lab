@@ -30,7 +30,7 @@ for i in range(0, len(input_files)):
           "Progress " + str(i + 1) + " / " + str(len(input_files)) + \
           "\n**************************\n")
     try:
-        subprocess.check_output(["python", "./audio2lab.py", input_files[i], input_files[i], mode], cwd="./")
+        subprocess.check_output(["python", "./Vocal2lab.py", input_files[i], input_files[i], mode], cwd="./")
     except subprocess.CalledProcessError as e:
         error += 1
         print("\n**************************\n" + \
