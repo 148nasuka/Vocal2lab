@@ -111,13 +111,10 @@ class merge_labels:
                 Jend_time.append(float(split[1]))
                 phoneme.append(split[2])
 
-            Sstart_time = Jstart_time * 10000000
-            Send_time = Jend_time * 10000000
-
         with open(temp_JlabC, 'w', encoding='utf-8') as f:
             for i in range(0, len(Jstart_time)):
-                start = int(Sstart_time[i] * 10000000)
-                end = int(Send_time[i] * 10000000)
+                start = int(Jstart_time[i] * 10000000)
+                end = int(Jend_time[i] * 10000000)
                 f.write(str(start) + " " + str(end) + " " + phoneme[i])
 
     def merge2sinsy(self):              # 変換後のJulius音素時間をSinsyの音素時間と置き換える（音素はSinsy基準）
@@ -192,15 +189,25 @@ class merge_labels:
                     final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + Sphoneme[i])
                 j = j + 1
             elif Sphoneme[i] == "pau\n" and Jphoneme[j] != "silB\n" or Jphoneme != "silE\n":           # 無音ラベル（抜け）
-                sec = int(Send_time[i]) - int(Sstart_time[i])
-                start = int(Jend_time[j - 1]) - sec
+                Ssec = int(Send_time[i]) - int(Sstart_time[i])
+                Jsec = int(Jend_time[j - 1]) - int(Jstart_time[j - 1])
+                start = int(Jend_time[j - 1]) - Ssec
                 end = Jstart_time[j]
-                if mode == "full":
-                    final[i - 1] = Jstart_time[j - 1] + " " + str(start) + " " + SFphoneme[i - 1]
-                    final.append(str(start) + " " + end + " " + SFphoneme[i])
-                elif mode == "mono":
-                    final[i - 1] = Jstart_time[j - 1] + " " + str(start) + " " + Sphoneme[i - 1]
-                    final.append(str(start) + " " + end + " " + Sphoneme[i])
+                if Ssec > Jsec:
+                    if mode == "full":
+                        final[i - 1] = Jstart_time[j - 1] + " " + Sstart_time[i] + " " + SFphoneme[i - 1]
+                        final.append(Sstart_time[i] + " " + end + " " + SFphoneme[i])
+                    elif mode == "mono":
+                        final[i - 1] = Jstart_time[j - 1] + " " + Sstart_time[i] + " " + Sphoneme[i - 1]
+                        final.append(Sstart_time[i] + " " + end + " " + Sphoneme[i])
+                else:
+                    if mode == "full":
+                        final[i - 1] = Jstart_time[j - 1] + " " + str(start) + " " + SFphoneme[i - 1]
+                        final.append(str(start) + " " + end + " " + SFphoneme[i])
+                    elif mode == "mono":
+                        final[i - 1] = Jstart_time[j - 1] + " " + str(start) + " " + Sphoneme[i - 1]
+                        final.append(str(start) + " " + end + " " + Sphoneme[i])
+
             elif Sphoneme[i] == "br\n":                                                                # 息継ぎラベル
                 sec = int(Send_time[i]) - int(Sstart_time[i])
                 start = int(Jend_time[j - 1]) - sec
