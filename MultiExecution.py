@@ -42,5 +42,5 @@ for i in range(0, len(input_files)):
 print("\n**************************\n" + \
       "Complete !! \n" + \
       "ERROR : " + str(error) + " / " + str(len(input_files)) + \
-      "ERROR list" + str(position) + \
+      "ERROR list (index) : " + str(position) + \
       "\n**************************\n")
