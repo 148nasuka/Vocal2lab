@@ -27,6 +27,7 @@ temp_JlabC = "./temp/convert/J" + sys.argv[2] + "C.lab"
 raw_Jlab = "./Julius/wav/" + sys.argv[2] + ".lab"
 temp_audio = "./Julius/wav/" + sys.argv[2] + ".wav"
 temp_text = "./Julius/wav/" + sys.argv[2] + ".txt"
+error_lab = "./out/error/" + sys.argv[2] + ".lab"
 output_filename = "./out/" + sys.argv[2] + ".lab"
 log_file = "./Julius/wav/" + sys.argv[1] + ".log"
 log_dir = "./Julius/log/" + sys.argv[2] + ".log"
@@ -123,7 +124,6 @@ class make_labels:
             elif lyrics[1] == " sp ":
                 lyrics.pop(0)
                 lyrics.pop(0)
-
 
         for i in range(0, len(lyrics)):
             if lyrics[i] == " sps ":
@@ -272,7 +272,6 @@ class merge_labels:
                     elif mode == "mono":
                         final[i - 1] = Jstart_time[j - 1] + " " + str(start) + " " + Sphoneme[i - 1]
                         final.append(str(start) + " " + end + " " + Sphoneme[i])
-
             elif Sphoneme[i] == "br\n":  # 息継ぎラベル
                 sec = int(Send_time[i]) - int(Sstart_time[i])
                 start = int(Jend_time[j - 1]) - sec
@@ -319,11 +318,15 @@ class merge_labels:
                 Cphoneme.append(split[2])
 
         for i in range(0, len(Cstart_time)):
+            if Cstart_time[i] > Cend_time[i]:
+                shutil.move(output_filename, error_lab)
             assert Cstart_time[i] < Cend_time[i], "ERROR：音素の開始時間が終了時間よりも未来に設定されています\n" \
                                                   "位置：[{0}]".format(i)
             if i != 0:
+                if Cstart_time[i] != Cend_time[i - 1]:
+                    shutil.move(output_filename, error_lab)
                 assert Cstart_time[i] == Cend_time[i - 1], "ERROR：一つ前の音素の終了時間と現在の音素の開始時間が不一致です\n" \
-                                                             "位置：[{0}]".format(i)
+                                                           "位置：[{0}]".format(i)
 
         print("Done")
 
