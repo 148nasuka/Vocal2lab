@@ -15,6 +15,7 @@ counter = 1
 input_dir = "./in/"
 input_files = []
 mode = sys.argv[1]
+position = []
 error = 0
 
 for file_name in os.listdir(input_dir):
@@ -32,6 +33,7 @@ for i in range(0, len(input_files)):
     try:
         subprocess.check_output(["python", "./Vocal2lab.py", input_files[i], input_files[i], mode], cwd="./")
     except subprocess.CalledProcessError as e:
+        position.append(i + 1)
         error += 1
         print("\n**************************\n" + \
               "           ERROR!! " + \
@@ -40,4 +42,5 @@ for i in range(0, len(input_files)):
 print("\n**************************\n" + \
       "Complete !! \n" + \
       "ERROR : " + str(error) + " / " + str(len(input_files)) + \
+      "ERROR list" + str(position) + \
       "\n**************************\n")
