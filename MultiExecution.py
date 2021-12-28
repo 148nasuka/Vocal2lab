@@ -6,17 +6,23 @@
 python ./MultiExecution.py [モード(mono / full)]
 
 """
-
+import datetime
+import shutil
 import subprocess
 import sys
 import os
 
 counter = 1
 input_dir = "./in/"
+out_dir = "./out/"
 input_files = []
 mode = sys.argv[1]
 position = []
 error = 0
+
+dt_now = datetime.datetime.now()
+output_dir = "./out/" + dt_now.strftime('%Y-%m-%d_%H-%M-%S')
+os.mkdir(output_dir)
 
 for file_name in os.listdir(input_dir):
     file_path = os.path.join(input_dir, file_name)
@@ -40,7 +46,23 @@ for i in range(0, len(input_files)):
               "\n**************************\n")
 
 print("\n**************************\n" + \
-      "Complete !! \n" + \
-      "ERROR : " + str(error) + " / " + str(len(input_files)) + \
+      "Labeling completed !! \n" + \
+      "ERROR : " + str(error) + " / " + str(len(input_files)) + "\n" + \
       "ERROR list (index) : " + str(position) + \
       "\n**************************\n")
+
+i = 1
+
+for file_name in os.listdir(out_dir):
+    file_path = os.path.join(out_dir, file_name)
+    if os.path.isfile(file_path):
+        print("Creating dataset : " + file_name)
+        os.mkdir(output_dir + "/" + str(i))
+        shutil.move("./out/" + file_name, output_dir + "/" + str(i))
+        shutil.copy("./in/" + file_name.split(".")[0] + ".wav", output_dir + "/" + str(i))
+        shutil.copy("./in/" + file_name.split(".")[0] + ".musicxml", output_dir + "/" + str(i))
+        i += 1
+
+
+
+

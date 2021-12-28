@@ -105,7 +105,8 @@ class make_labels:
         while True:
             for i in range(0, num - 1):
                 if i < len(lyrics) - 1:
-                    if lyrics[i] == " sp " and lyrics[i + 1] == " sp ":
+                    if lyrics[i] == " sp " and lyrics[i + 1] == " sp " or \
+                            lyrics[i] == " sps " and lyrics[i + 1] == " sps ":
                         lyrics.pop(i)
                         i += 1
                         count += 1
@@ -202,25 +203,15 @@ class merge_labels:
         for i in range(0, len(Sphoneme)):  # JuliusとSinsyの音素ラベルの対応を取りながら置き換え
             # print(Sphoneme[i] + Jphoneme[j])
 
-            if Sphoneme[i] == "sil\n" and Jphoneme[j] == "silB\n":  # 無音ラベル（開始）
+            if Sphoneme[i] == "sil\n" and Jphoneme[j] == "silB\n" or \
+                    Sphoneme[i] == "sil\n" and Jphoneme[j] == "sp\n":  # 無音ラベル（開始）
                 if mode == "full":
                     final.append(str(Sstart_time[i]) + " " + str(Send_time[i]) + " " + SFphoneme[i])
                 elif mode == "mono":
                     final.append(str(Sstart_time[i]) + " " + str(Send_time[i]) + " " + Sphoneme[i])
                 j = j + 1
-            elif Sphoneme[i] == "sil\n" and Jphoneme[j] == "sp\n":  # 無音ラベル（開始）
-                if mode == "full":
-                    final.append(str(Sstart_time[i]) + " " + str(Send_time[i]) + " " + SFphoneme[i])
-                elif mode == "mono":
-                    final.append(str(Sstart_time[i]) + " " + str(Send_time[i]) + " " + Sphoneme[i])
-                j = j + 1
-            elif Sphoneme[i] == "pau\n" and Sphoneme[i - 1] == "sil\n" or Jphoneme == "silB\n":  # 無音ラベル（開始連続）
-                if mode == "full":
-                    final.append(str(Send_time[i - 1]) + " " + str(Jend_time[j]) + " " + SFphoneme[i])
-                elif mode == "mono":
-                    final.append(str(Send_time[i - 1]) + " " + str(Jend_time[j]) + " " + Sphoneme[i])
-                j = j + 1
-            elif Sphoneme[i] == "pau\n" and Sphoneme[i - 1] == "sil\n" and Jphoneme == "sp\n":  # 無音ラベル（開始連続）
+            elif Sphoneme[i] == "pau\n" and Sphoneme[i - 1] == "sil\n" and Jphoneme == "silB\n" or \
+                    Sphoneme[i] == "pau\n" and Sphoneme[i - 1] == "sil\n" and Jphoneme == "sp\n":  # 無音ラベル（開始連続）
                 if mode == "full":
                     final.append(str(Send_time[i - 1]) + " " + str(Jend_time[j]) + " " + SFphoneme[i])
                 elif mode == "mono":
@@ -234,26 +225,18 @@ class merge_labels:
                     Sphoneme[i] == "o\n" and Jphoneme[j] == "o:\n" or \
                     Sphoneme[i] == "o\n" and Jphoneme[j] == "o:\n" or \
                     Sphoneme[i] == "cl\n" and Jphoneme[j] == "q\n" or \
-                    Sphoneme[i] == "pau\n" and Jphoneme[j] == "sp\n":
+                    Sphoneme[i] == "pau\n" and Jphoneme[j] == "sp\n" or \
+                    Sphoneme[i] == "pau\n" and Jphoneme[j] == "silB\n" or \
+                    Sphoneme[i] == "pau\n" and Jphoneme[j] == "silE\n":  # 単純置き換え
                 if mode == "full":
                     final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + SFphoneme[i])
                 elif mode == "mono":
                     final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + Sphoneme[i])
                 j = j + 1
-            elif Sphoneme[i] == "pau\n" and Jphoneme[j] == "silB\n" or Jphoneme == "silE\n":  # 無音ラベル（単純置き換え）
-                if mode == "full":
-                    final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + SFphoneme[i])
-                elif mode == "mono":
-                    final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + Sphoneme[i])
-                j = j + 1
-            elif Sphoneme[i] == "pau\n" and Jphoneme[j] == "silE\n":  # 無音ラベル（単純置き換え）
-                if mode == "full":
-                    final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + SFphoneme[i])
-                elif mode == "mono":
-                    final.append(str(Jstart_time[j]) + " " + str(Jend_time[j]) + " " + Sphoneme[i])
-                j = j + 1
-            elif Sphoneme[i] == "pau\n" and Jphoneme[j] != "silB\n" or Jphoneme[j] != "silE\n" or Jphoneme[
-                j] != "sp\n":  # 無音ラベル（抜け）
+            elif Sphoneme[i] == "pau\n" and Jphoneme[j] != "silB\n" or \
+                    Sphoneme[i] == "pau\n" and Jphoneme[j] != "silE\n" or \
+                    Sphoneme[i] == "pau\n" and Jphoneme[j] != "sp\n" or \
+                    Sphoneme[i] == "br\n":  # 無音ラベル（抜け）
                 Ssec = int(Send_time[i]) - int(Sstart_time[i])
                 Jsec = int(Jend_time[j - 1]) - int(Jstart_time[j - 1])
                 start = int(Jend_time[j - 1]) - Ssec
@@ -272,16 +255,6 @@ class merge_labels:
                     elif mode == "mono":
                         final[i - 1] = Jstart_time[j - 1] + " " + str(start) + " " + Sphoneme[i - 1]
                         final.append(str(start) + " " + end + " " + Sphoneme[i])
-            elif Sphoneme[i] == "br\n":  # 息継ぎラベル
-                sec = int(Send_time[i]) - int(Sstart_time[i])
-                start = int(Jend_time[j - 1]) - sec
-                end = Jstart_time[j]
-                if mode == "full":
-                    final[i - 1] = Jstart_time[j - 1] + " " + str(start) + " " + SFphoneme[i - 1]
-                    final.append(str(start) + " " + end + " " + SFphoneme[i])
-                elif mode == "mono":
-                    final[i - 1] = Jstart_time[j - 1] + " " + str(start) + " " + Sphoneme[i - 1]
-                    final.append(str(start) + " " + end + " " + Sphoneme[i])
             elif i != len(Sphoneme):
                 if Sphoneme[i] == "sil\n" and Sphoneme[i + 1] == "sil\n":  # 1小節以上の無音
                     if mode == "full":
