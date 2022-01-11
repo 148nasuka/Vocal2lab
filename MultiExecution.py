@@ -3,7 +3,7 @@
 ※管理者権限でないと動かない場合があります
 
 使い方 :
-python ./MultiExecution.py [モード(mono / full)]
+python ./MultiExecution.py [モード(mono / full)] [サンプリングレート(48000 / 96000)]
 
 """
 import datetime
@@ -17,12 +17,17 @@ input_dir = "./in/"
 out_dir = "./out/"
 input_files = []
 mode = sys.argv[1]
+input_sr_mode = sys.argv[2]
 position = []
 error = 0
+
 
 dt_now = datetime.datetime.now()
 output_dir = "./out/" + dt_now.strftime('%Y-%m-%d_%H-%M-%S')
 os.mkdir(output_dir)
+
+if len(sys.argv) != 3:
+    sys.exit("xml2lab.py [mode] [sampling rate]")
 
 for file_name in os.listdir(input_dir):
     file_path = os.path.join(input_dir, file_name)
@@ -57,12 +62,17 @@ for file_name in os.listdir(out_dir):
     file_path = os.path.join(out_dir, file_name)
     if os.path.isfile(file_path):
         print("Creating dataset : " + file_name)
-        os.mkdir(output_dir + "/" + str(i))
-        shutil.move("./out/" + file_name, output_dir + "/" + str(i))
-        shutil.copy("./in/" + file_name.split(".")[0] + ".wav", output_dir + "/" + str(i))
-        shutil.copy("./in/" + file_name.split(".")[0] + ".musicxml", output_dir + "/" + str(i))
+        os.mkdir(output_dir + "/" + file_name.split(".")[0])
+        shutil.move("./out/" + file_name, output_dir + "/" + file_name.split(".")[0])
+        if input_sr_mode == 48000:
+            shutil.copy("./in/" + file_name.split(".")[0] + ".wav", output_dir + "/" + file_name.split(".")[0])
+        else:
+            shutil.copy("./downscaling/" + file_name.split(".")[0] + ".wav", output_dir + "/" + file_name.split(".")[0])
+        shutil.copy("./in/" + file_name.split(".")[0] + ".musicxml", output_dir + "/" + file_name.split(".")[0])
         i += 1
 
-
+print("\n**************************\n" + \
+      "Done !! " + \
+      "\n**************************\n")
 
 

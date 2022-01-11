@@ -26,6 +26,7 @@ temp_Jlab = "./temp/J" + sys.argv[2] + ".lab"
 temp_JlabC = "./temp/convert/J" + sys.argv[2] + "C.lab"
 raw_Jlab = "./Julius/wav/" + sys.argv[2] + ".lab"
 temp_audio = "./Julius/wav/" + sys.argv[2] + ".wav"
+down_audio = "./downscaling/" + sys.argv[2] + ".wav"
 temp_text = "./Julius/wav/" + sys.argv[2] + ".txt"
 error_lab = "./out/error/" + sys.argv[2] + ".lab"
 output_filename = "./out/" + sys.argv[2] + ".lab"
@@ -71,8 +72,15 @@ class make_labels:
 
     def julius_make_lab(self):  # Juliusラベルを生成
         y, sr = librosa.core.load(input_audio, sr=16000, mono=True)  # ダウンサンプリング
-        sf.write(temp_audio, y, sr, subtype="PCM_16")  # ダウンサンプリングを保存
+        sf.write(temp_audio, y, sr, subtype="PCM_16")  # Julius用ダウンサンプリングを保存
+
+        y, sr = librosa.core.load(input_audio)
+        if sr == 22050:
+            y, sr = librosa.core.load(input_audio, sr=48000, mono=True)
+            sf.write(down_audio, y, sr, subtype="PCM_16")  # NNSVSダウンサンプリングを保存
+
         self.read_XML()
+
 
         print("Making Julius label...")
         subprocess.run(["perl", "./segment_julius.pl"], cwd="./Julius")
@@ -116,6 +124,9 @@ class make_labels:
                 count = 0
 
         if lyrics[len(lyrics) - 1] == " sp ":
+            lyrics.pop(-1)
+        elif lyrics[len(lyrics) - 1] == " sps " and lyrics[len(lyrics) - 2] == " sp ":
+            lyrics.pop(-1)
             lyrics.pop(-1)
 
         print('Lyrics : ' + ','.join(lyrics))
@@ -201,6 +212,7 @@ class merge_labels:
                 Jphoneme.append(split[2])
 
         for i in range(0, len(Sphoneme)):  # JuliusとSinsyの音素ラベルの対応を取りながら置き換え
+            # デバッグ
             # print(Sphoneme[i] + Jphoneme[j])
 
             if Sphoneme[i] == "sil\n" and Jphoneme[j] == "silB\n" or \
