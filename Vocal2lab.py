@@ -37,6 +37,9 @@ if sys.argv[1] == "--multi" and sys.argv[2] == "ds":
 if len(sys.argv) != 3:
     sys.exit("ERROR : 使い方は以下のコマンドで確認できます\nVocal2lab.py -help")
 
+if not os.path.exists("./temp/downscaling"):
+    os.mkdir("./temp/downscaling")
+
 sinsy = pysinsy.Sinsy()
 input_audio = "./in/" + sys.argv[1] + ".wav"
 input_xml = "./in/" + sys.argv[1] + ".musicxml"
@@ -84,7 +87,7 @@ class make_labels:
         with wave.open(input_audio, 'rb') as wr:
             fr = wr.getframerate()
 
-        if fr == 96000:
+        if fr == 96000 or fr == 48000:
             y, sr = librosa.core.load(input_audio, sr=48000, mono=True)
             sf.write(down_audio, y, sr, subtype="PCM_16")  # 48kHzダウンサンプリングを保存
 
