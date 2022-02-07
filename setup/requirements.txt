@@ -1,0 +1,3 @@
+pysinsy
+librosa
+SoundFile

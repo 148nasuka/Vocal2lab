@@ -1,33 +1,23 @@
-"""
-./in フォルダ内のモノすべてに対してラベル生成したい場合はこちらのスクリプトを動かして下さい。
-※管理者権限でないと動かない場合があります
-
-使い方 :
-python ./MultiExecution.py [モード(mono / full)] [サンプリングレート(48000 / 96000)]
-
-"""
 import datetime
 import shutil
 import subprocess
 import sys
 import os
 
+if len(sys.argv) != 2:
+    sys.exit("ERROR : ラベル生成は以下のような入力になります\nMultiExecution.py [sampling rate(48000 or 96000)]")
+
 counter = 1
 input_dir = "./in/"
 out_dir = "./out/"
 input_files = []
-mode = sys.argv[1]
-input_sr_mode = sys.argv[2]
-position = []
+input_sr_mode = sys.argv[1]
+error_list = []
 error = 0
-
 
 dt_now = datetime.datetime.now()
 output_dir = "./out/" + dt_now.strftime('%Y-%m-%d_%H-%M-%S')
 os.mkdir(output_dir)
-
-if len(sys.argv) != 3:
-    sys.exit("xml2lab.py [mode] [sampling rate]")
 
 for file_name in os.listdir(input_dir):
     file_path = os.path.join(input_dir, file_name)
@@ -35,16 +25,19 @@ for file_name in os.listdir(input_dir):
         if counter % 2 == 0:
             input_files.append(file_name.split(".")[0])
         counter += 1
+
+if counter == 1:
+    sys.exit("ERROR : ./in/ ディレクトリに楽譜と音声ファイルを置いてください")
 print(input_files)
 
 for i in range(0, len(input_files)):
     print("\n**************************\n" + \
-          "Progress " + str(i + 1) + " / " + str(len(input_files)) + \
+          "Progress " + str(i + 1) + " / " + str(len(input_files)) + " (" + str(input_files[i]) + ")" + \
           "\n**************************\n")
     try:
-        subprocess.check_output(["python", "./Vocal2lab.py", input_files[i], input_files[i], mode], cwd="./")
+        subprocess.check_output(["python", "./Vocal2lab.py", input_files[i], input_files[i]], cwd="./")
     except subprocess.CalledProcessError as e:
-        position.append(i + 1)
+        error_list.append(str(input_files[i]))
         error += 1
         print("\n**************************\n" + \
               "           ERROR!! " + \
@@ -53,7 +46,7 @@ for i in range(0, len(input_files)):
 print("\n**************************\n" + \
       "Labeling completed !! \n" + \
       "ERROR : " + str(error) + " / " + str(len(input_files)) + "\n" + \
-      "ERROR list (index) : " + str(position) + \
+      "ERROR list : " + str(error_list) + \
       "\n**************************\n")
 
 i = 1
@@ -64,15 +57,14 @@ for file_name in os.listdir(out_dir):
         print("Creating dataset : " + file_name)
         os.mkdir(output_dir + "/" + file_name.split(".")[0])
         shutil.move("./out/" + file_name, output_dir + "/" + file_name.split(".")[0])
-        if input_sr_mode == 48000:
+        if input_sr_mode == "48000":
             shutil.copy("./in/" + file_name.split(".")[0] + ".wav", output_dir + "/" + file_name.split(".")[0])
         else:
-            shutil.copy("./downscaling/" + file_name.split(".")[0] + ".wav", output_dir + "/" + file_name.split(".")[0])
+            shutil.copy("./temp/downscaling/" + file_name.split(".")[0] + ".wav",
+                        output_dir + "/" + file_name.split(".")[0])
         shutil.copy("./in/" + file_name.split(".")[0] + ".musicxml", output_dir + "/" + file_name.split(".")[0])
         i += 1
 
 print("\n**************************\n" + \
       "Done !! " + \
       "\n**************************\n")
-
-
