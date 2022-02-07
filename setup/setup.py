@@ -31,12 +31,6 @@ if os.path.exists(dic_location):
         shutil.copy(copy_location + "\japanese.euc_jp.table", dic_location + "\japanese.euc_jp.table")
         print("japanese.euc_jp.table : set")
 
-    if os.path.isfile(dic_location + "\japanese.macron"):
-        print("japanese.macron : check")
-    else:
-        shutil.copy(copy_location + "\japanese.macron", dic_location + "\japanese.macron")
-        print("japanese.macron : set")
-
     if os.path.isfile(dic_location + "\japanese.shift_jis.conf"):
         print("japanese.shift_jis.conf : check")
     else:
