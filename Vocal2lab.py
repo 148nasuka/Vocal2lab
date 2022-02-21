@@ -41,8 +41,8 @@ if not os.path.exists("./temp/downscaling"):
     os.mkdir("./temp/downscaling")
 
 sinsy = pysinsy.Sinsy()
-input_audio = "./in/" + sys.argv[1] + ".wav"
-input_xml = "./in/" + sys.argv[1] + ".musicxml"
+input_audio = "./data_in/" + sys.argv[1] + ".wav"
+input_xml = "./data_in/" + sys.argv[1] + ".musicxml"
 temp_Slab = "./temp/S" + sys.argv[2] + ".lab"
 temp_SFlab = "./temp/SF" + sys.argv[2] + ".lab"
 temp_Jlab = "./temp/J" + sys.argv[2] + ".lab"
@@ -51,8 +51,8 @@ raw_Jlab = "./Julius/wav/" + sys.argv[2] + ".lab"
 temp_audio = "./Julius/wav/" + sys.argv[2] + ".wav"
 down_audio = "./temp/downscaling/" + sys.argv[2] + ".wav"
 temp_text = "./Julius/wav/" + sys.argv[2] + ".txt"
-error_lab = "./out/error/" + sys.argv[2] + ".lab"
-output_filename = "./out/" + sys.argv[2] + ".lab"
+error_lab = "./data_out/error/" + sys.argv[2] + ".lab"
+output_filename = "./data_out/" + sys.argv[2] + ".lab"
 log_file = "./Julius/wav/" + sys.argv[1] + ".log"
 log_dir = "./Julius/log/" + sys.argv[2] + ".log"
 
