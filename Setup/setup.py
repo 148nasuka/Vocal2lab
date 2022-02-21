@@ -40,7 +40,8 @@ import pysinsy
 
 sinsy_location = str(pysinsy.__file__)
 dic_location = sinsy_location.replace("__init__.py", "_dic")
-os.mkdir(dic_location)
+if not os.path.exists(dic_location):
+    os.mkdir(dic_location)
 copy_location = "./Sinsy_dic"
 
 if os.path.exists(dic_location):
