@@ -48,29 +48,22 @@
 <h2>2. 実行方法</h2>
 
 <p><b>一つだけラベリングを実行する場合。</b><br>
-  
-
     python ./Vocal2lab.py [入力ファイル名]　[出力ファイル名]
 </p>
 
 <p><b>（ラベルデータは ./out/　にラベル単体で保存されます。）</strong><br><br>
 
 <p><strong>一括ラベリングを実行する場合。</strong><br>
-  
-
     python ./Vocal2lab.py --multi
 </p>
 
 <p>（オプション）出力サンプリングレートを48kHzに揃える場合。<br>
-  
-
     python ./Vocal2lab.py --multi ds
 </p>
 
 <p><b>（ラベルデータは ./out/[実行日時]/　に楽譜、音声、ラベルのセットで保存されます。）</b><br><br>
 
 <p><b>コマンドリストを確認する場合。</b><br>
-
     python ./Vocal2lab.py --help
 </p><br>
 
