@@ -14,11 +14,13 @@
 例：/nnsvs/egs/_commmon/spsvs/synthesis.sh 44～47行目
     <code>
     
-    #utt_list=./data/list/$s.list \
-    #in_dir=data/acoustic/$input/ \
-    #out_dir=$expdir/synthesis/$s/${acoustic_eval_checkpoint/.pth/}/$input \
-    #ground_truth_duration=$ground_truth_duration 変更前
+    # 変更前
+    # utt_list=./data/list/$s.list \
+    # in_dir=data/acoustic/$input/ \
+    # out_dir=$expdir/synthesis/$s/${acoustic_eval_checkpoint/.pth/}/$input \
+    # ground_truth_duration=$ground_truth_duration 
     
+    # 以下に置き換え
     ground_truth_duration=false \
     label_path=~/Download/amehuri.lab \    #楽譜ラベルのパス
     out_wav_path=~/Download/amehuri.wav    #保存先のパス
