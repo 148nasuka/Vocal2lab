@@ -85,7 +85,7 @@
 
 </p>
 
-<img src="./Github_img/Vocal2lab.png" alt="Vocal2lab" title="Vocal2lab">
+<img src="./Github_img/Vocal2lab.jpg" alt="Vocal2lab" title="Vocal2lab">
 
 
 
