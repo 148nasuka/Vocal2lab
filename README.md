@@ -10,7 +10,7 @@
 
 <li>Python3</li>
 
-<li>Active Perl</li>
+<li>Perl</li>
 
 <h1>使い方</h1>
 
