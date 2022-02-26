@@ -41,10 +41,6 @@
     python ./setup.py
   </p>
 
-
-
-
-
 <h2>2. 実行方法</h2>
 
 <p><b>一つだけラベリングを実行する場合。</b><br>
@@ -81,16 +77,9 @@
 
 <p>このツールは<a href="https://github.com/julius-speech/segmentation-kit">Julius segmentation-kit</a> を利用して音素ラベリングを実行しています。<br>
 
-尚、構成は以下の図のようになっています。
-
-</p>
+尚、構成は以下の図のようになっています。</p>
 
 <img src="./Github_img/Vocal2lab.jpg" alt="Vocal2lab" title="Vocal2lab">
-
-
-
-    
-
 
 <p><br>今後の改善項目</p>
 
