@@ -10,7 +10,7 @@
     python ./music2lab [入力ファイル名.musicxml] [出力ファイル名.lab] generate
 </p>
 
-<p>3. 変換後、 /Vocal2lab/Music2lab/lab_out/ に出力されるラベルデータをNNSVSの生成フェーズで指定する事で任意の曲を歌わせることができる。<br>
+<p>3. 変換後、 /Vocal2lab/Music2lab/lab_out/ に出力されるラベルデータを<br>NNSVSの生成フェーズで指定する事で任意の曲を歌わせることができる。<br>
 例：/nnsvs/egs/_commmon/spsvs/synthesis.sh 44～47行目
     <code>
     
