@@ -1,6 +1,8 @@
 # Vocal2lab
 
-<p><a href="https://github.com/r9y9/nnsvs">NNSVS（Neural network-based singing voice synthesis）</a>向けの教師データ作成を支援する自動ラベリングツールです。</p><br>
+<p><a href="https://github.com/r9y9/nnsvs">NNSVS（Neural network-based singing voice synthesis）</a>向けの教師データ作成を支援する自動ラベリングツールです。<br>
+WindowsでのNNSVS(GPU)環境構築方法、本ツールの使い方は /Vocal2lab/tutorial.pdf にて解説しています。
+</p><br>
 
 <h1>動作環境</h1>
 
