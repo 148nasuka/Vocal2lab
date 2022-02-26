@@ -85,7 +85,11 @@
 
 </p>
 
-<p>画像準備中</p>
+<img src="./Github_img/Vocal2lab.png" alt="Vocal2lab" title="Vocal2lab
+
+">
+
+
 
 <p>今後の改善項目</p>
 
