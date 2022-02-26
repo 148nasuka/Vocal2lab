@@ -75,7 +75,7 @@
 
 <p>出力ラベルは<a href="https://www.speech.kth.se/wavesurfer/man.html">WaveSurfer</a>で精度の確認と編集ができます。</p>
 
-<p>画像準備中</p>
+
 
 <h1>Vocal2labの構成（開発者向け）</h1>
 
@@ -88,7 +88,8 @@
 <img src="./Github_img/Vocal2lab.jpg" alt="Vocal2lab" title="Vocal2lab">
 
 
-
+<br>
+    
 
 
 <p>今後の改善項目</p>
