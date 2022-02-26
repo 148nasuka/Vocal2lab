@@ -1,6 +1,6 @@
 # Music2lab
 
-<p><a href="https://github.com/r9y9/nnsvs">NNSVS（Neural network-based singing voice synthesis）</a>の学習済みレシピで任意の曲を歌わせるためのラベルデータを楽譜データ(MusicXML)から生成するスクリプトです。</p><br>
+<p><a href="https://github.com/r9y9/nnsvs">NNSVS（Neural network-based singing voice synthesis）</a>の学習済みレシピで任意の曲を歌わせるためのラベルデータを楽譜データ(MusicXML)から生成するスクリプト。</p><br>
 
 <h1>使い方</h1>
 <p>1. 楽譜データを /Vocal2lab/Music2lab/xml_in/ に入れる</p>
