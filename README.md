@@ -88,11 +88,11 @@
 <img src="./Github_img/Vocal2lab.jpg" alt="Vocal2lab" title="Vocal2lab">
 
 
-<br>
+
     
 
 
-<p>今後の改善項目</p>
+<p><br>今後の改善項目</p>
 
 <li>音声認識モデルの入力最大長の変更（現状20秒）</li>
 
