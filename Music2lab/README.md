@@ -4,4 +4,7 @@
 
 <h1>使い方</h1>
 
-<p>動作には以下の環境が必要になります。</p>
+<p><strong>一括ラベリングを実行する場合。</strong><br>
+    
+    python ./music2lab [入力ファイル名.musicxml] [出力ファイル名.lab] 
+</p>
