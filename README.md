@@ -1,7 +1,7 @@
 # Vocal2lab
 
 <p><a href="https://github.com/r9y9/nnsvs">NNSVS（Neural network-based singing voice synthesis）</a>向けの教師データ作成を支援する自動ラベリングツールです。<br>
-WindowsでのNNSVS(GPU)環境構築方法、本ツールの使い方は /Vocal2lab/tutorial.pdf にて解説しています。
+WindowsでのNNSVS(GPU)環境構築方法、本ツールの使い方は /Vocal2lab/Tutorial.pdf にて解説しています。
 </p><br>
 
 <h1>動作環境</h1>
@@ -18,7 +18,7 @@ WindowsでのNNSVS(GPU)環境構築方法、本ツールの使い方は /Vocal2l
 
 <b><p>留意事項</b></p>
 
-<p>Vocal2labは ./Vocal2lab/in/ 内のファイルに対してラベリングを行うことができます。</p>
+<p>Vocal2labは ./Vocal2lab/Data_in/ 内のファイルに対してラベリングを行うことができます。</p>
 
 入力ファイル名は楽譜、音声共に同じ名前にして下さい。<br>入力形式は .musicxml（楽譜）.wav（音声）です。<br>出力形式は .lab（ラベル）です。</p><br>
 
@@ -36,7 +36,8 @@ WindowsでのNNSVS(GPU)環境構築方法、本ツールの使い方は /Vocal2l
 
 <h2>1. セットアップ</h2>
 
-<p>※本ツールはCUIプログラムとなっています。</p>
+<p>※本ツールはCUIプログラムとなっています。<br>
+尚、venv等の仮想環境では正しく動作しない可能性があります。</p>
 
 <b><p>初回実行時のみ、管理者権限のターミナルで ./Vocal2lab/setup/ を開き、下記のコマンドを入力してください。<br>（必須PythonライブラリとSinsy音素辞書のインストールを自動で行います。）</p></b>
 
@@ -49,7 +50,7 @@ WindowsでのNNSVS(GPU)環境構築方法、本ツールの使い方は /Vocal2l
     
     python ./Vocal2lab.py [入力ファイル名]　[出力ファイル名]
 
-<b>（ラベルデータは ./out/　にラベル単体で保存されます。）</strong><br><br></p>
+<b>（ラベルデータは ./Data_out/　にラベル単体で保存されます。）</strong><br><br></p>
 
 <p><strong>一括ラベリングを実行する場合。</strong><br>
     
@@ -60,7 +61,7 @@ WindowsでのNNSVS(GPU)環境構築方法、本ツールの使い方は /Vocal2l
     
     python ./Vocal2lab.py --multi ds
 
-<b>（ラベルデータは ./out/[実行日時]/　に楽譜、音声、ラベルのセットで保存されます。）</b><br><br></p>
+<b>（ラベルデータは ./Data_out/[実行日時]/　に楽譜、音声、ラベルのセットで保存されます。）</b><br><br></p>
 
 <p><b>コマンドリストを確認する場合。</b><br>
     
