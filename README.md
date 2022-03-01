@@ -10,7 +10,7 @@ WindowsでのNNSVS(GPU)環境構築方法、本ツールの使い方は /Vocal2l
 
 <li>Windows</li>
 
-<li>Python3</li>
+<li>Python3.8</li>
 
 <li>Perl</li>
 
