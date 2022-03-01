@@ -8,15 +8,15 @@ if len(sys.argv) != 2:
     sys.exit("ERROR : ラベル生成は以下のような入力になります\nMultiExecution.py [sampling rate(48000 or 96000)]")
 
 counter = 1
-input_dir = "./data_in/"
-out_dir = "./data_out/"
+input_dir = "./Data_in/"
+out_dir = "./Data_out/"
 input_files = []
 input_sr_mode = sys.argv[1]
 error_list = []
 error = 0
 
 dt_now = datetime.datetime.now()
-output_dir = "./data_out/" + dt_now.strftime('%Y-%m-%d_%H-%M-%S')
+output_dir = "./Data_out/" + dt_now.strftime('%Y-%m-%d_%H-%M-%S')
 os.mkdir(output_dir)
 
 for file_name in os.listdir(input_dir):
@@ -27,7 +27,7 @@ for file_name in os.listdir(input_dir):
         counter += 1
 
 if counter == 1:
-    sys.exit("ERROR : ./data_in/ ディレクトリに楽譜と音声ファイルを置いてください")
+    sys.exit("ERROR : ./Data_in/ ディレクトリに楽譜と音声ファイルを置いてください")
 print(input_files)
 
 for i in range(0, len(input_files)):
@@ -56,13 +56,13 @@ for file_name in os.listdir(out_dir):
     if os.path.isfile(file_path):
         print("Creating dataset : " + file_name)
         os.mkdir(output_dir + "/" + file_name.split(".")[0])
-        shutil.move("./data_out/" + file_name, output_dir + "/" + file_name.split(".")[0])
+        shutil.move("./Data_out/" + file_name, output_dir + "/" + file_name.split(".")[0])
         if input_sr_mode == "48000":
-            shutil.copy("./data_in/" + file_name.split(".")[0] + ".wav", output_dir + "/" + file_name.split(".")[0])
+            shutil.copy("./Data_in/" + file_name.split(".")[0] + ".wav", output_dir + "/" + file_name.split(".")[0])
         else:
             shutil.copy("./temp/downscaling/" + file_name.split(".")[0] + ".wav",
                         output_dir + "/" + file_name.split(".")[0])
-        shutil.copy("./data_in/" + file_name.split(".")[0] + ".musicxml", output_dir + "/" + file_name.split(".")[0])
+        shutil.copy("./Data_in/" + file_name.split(".")[0] + ".musicxml", output_dir + "/" + file_name.split(".")[0])
         i += 1
 
 print("\n**************************\n" + \
