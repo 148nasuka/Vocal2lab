@@ -1,5 +1,6 @@
 import os
 import shutil
+import subprocess
 
 if not os.path.exists("../Data_in"):
     os.mkdir("../Data_in")
@@ -30,7 +31,7 @@ print("\n************************************************\n" + \
       "Vocal2labに必要なライブラリをインストールします" + \
       "\n************************************************\n")
 
-os.system('pip install -r requirements.txt')
+subprocess.check_output(["pip3", "install", "-r", "requirements.txt"], cwd="./")
 
 print("\n**********************************************\n" + \
       "pysinsy 音素辞書ファイルの確認をします"
@@ -81,6 +82,14 @@ if os.path.exists(dic_location):
     else:
         shutil.copy(copy_location + "\japanese.utf_8.table", dic_location + "\japanese.utf_8.table")
         print("japanese.utf_8.table : set")
+
+    if os.path.isfile(dic_location + "\japanese.macron"):
+        print("japanese.macron : check")
+    else:
+        f = open(dic_location + "\japanese.macron", "w")
+        f.close()
+        print("japanese.macron : set")
+
 else:
     print("pysinsy のインストールに失敗している可能性があります\nライブラリの再インストールをしてください")
 
