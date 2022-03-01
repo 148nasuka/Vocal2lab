@@ -1,3 +1,5 @@
+#coding: UTF-8
+
 import sys  # コマンド変数用
 import os  # ファイル作成操作用
 import shutil  # ファイル移動操作用
@@ -7,6 +9,7 @@ import wave  # ダウンサンプリング用
 import soundfile as sf  # ダウンサンプリング書き出し用
 import xml.etree.ElementTree as ET  # musicXML読み込み用
 import subprocess  # perlプログラム実行用
+
 
 if len(sys.argv) == 1:  # チェック
     sys.exit("ERROR : 使い方は以下のコマンドで確認できます\nVocal2lab.py --help")
@@ -41,8 +44,8 @@ if not os.path.exists("./temp/downscaling"):
     os.mkdir("./temp/downscaling")
 
 sinsy = pysinsy.Sinsy()
-input_audio = "./data_in/" + sys.argv[1] + ".wav"
-input_xml = "./data_in/" + sys.argv[1] + ".musicxml"
+input_audio = "./Data_in/" + sys.argv[1] + ".wav"
+input_xml = "./Data_in/" + sys.argv[1] + ".musicxml"
 temp_Slab = "./temp/S" + sys.argv[2] + ".lab"
 temp_SFlab = "./temp/SF" + sys.argv[2] + ".lab"
 temp_Jlab = "./temp/J" + sys.argv[2] + ".lab"
@@ -51,8 +54,8 @@ raw_Jlab = "./Julius/wav/" + sys.argv[2] + ".lab"
 temp_audio = "./Julius/wav/" + sys.argv[2] + ".wav"
 down_audio = "./temp/downscaling/" + sys.argv[2] + ".wav"
 temp_text = "./Julius/wav/" + sys.argv[2] + ".txt"
-error_lab = "./data_out/error/" + sys.argv[2] + ".lab"
-output_filename = "./data_out/" + sys.argv[2] + ".lab"
+error_lab = "./Data_out/error/" + sys.argv[2] + ".lab"
+output_filename = "./Data_out/" + sys.argv[2] + ".lab"
 log_file = "./Julius/wav/" + sys.argv[1] + ".log"
 log_dir = "./Julius/log/" + sys.argv[2] + ".log"
 
