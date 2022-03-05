@@ -7,7 +7,7 @@
 
 <p>2. <strong>楽譜ファイルから生成用のラベルデータを生成する</strong><br>
     
-    python ./music2lab [入力ファイル名.musicxml] [出力ファイル名.lab] generate
+    python ./music2lab [入力ファイル名] [出力ファイル名]
 </p>
 
 <p>3. 変換後、 /Vocal2lab/Music2lab/lab_out/ に出力されるラベルデータを<br>NNSVSの生成フェーズで指定する事で任意の曲を歌わせることができる。<br>
