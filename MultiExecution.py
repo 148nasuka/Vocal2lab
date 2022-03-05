@@ -1,3 +1,6 @@
+# coding: UTF-8
+# v0.0.1 (2022/03/05)
+
 import datetime
 import shutil
 import subprocess
@@ -32,7 +35,7 @@ print(input_files)
 
 for i in range(0, len(input_files)):
     print("\n**************************\n" + \
-          "Progress " + str(i + 1) + " / " + str(len(input_files)) + " (" + str(input_files[i]) + ")" + \
+          "進捗 " + str(i + 1) + " / " + str(len(input_files)) + " (" + str(input_files[i]) + ")" + \
           "\n**************************\n")
     try:
         subprocess.check_output(["python", "./Vocal2lab.py", input_files[i], input_files[i]], cwd="./")
@@ -44,9 +47,9 @@ for i in range(0, len(input_files)):
               "\n**************************\n")
 
 print("\n**************************\n" + \
-      "Labeling completed !! \n" + \
+      "ラベリング完了 !! \n" + \
       "ERROR : " + str(error) + " / " + str(len(input_files)) + "\n" + \
-      "ERROR list : " + str(error_list) + \
+      "ERROR リスト : " + str(error_list) + \
       "\n**************************\n")
 
 i = 1
@@ -54,7 +57,7 @@ i = 1
 for file_name in os.listdir(out_dir):
     file_path = os.path.join(out_dir, file_name)
     if os.path.isfile(file_path):
-        print("Creating dataset : " + file_name)
+        print("データセット作成中 : " + file_name)
         os.mkdir(output_dir + "/" + file_name.split(".")[0])
         shutil.move("./Data_out/" + file_name, output_dir + "/" + file_name.split(".")[0])
         if input_sr_mode == "48000":
@@ -66,5 +69,5 @@ for file_name in os.listdir(out_dir):
         i += 1
 
 print("\n**************************\n" + \
-      "Done !! " + \
+      "完了 !! " + \
       "\n**************************\n")

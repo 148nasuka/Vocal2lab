@@ -1,4 +1,5 @@
-#coding: UTF-8
+# coding: UTF-8
+# v0.0.1 (2022/03/05)
 
 import sys  # コマンド変数用
 import os  # ファイル作成操作用
