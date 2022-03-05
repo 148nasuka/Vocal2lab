@@ -1,3 +1,6 @@
+# coding: UTF-8
+# v0.0.1 (2022/03/05)
+
 import os
 import shutil
 import subprocess
@@ -28,7 +31,7 @@ if not os.path.exists("../temp/downscaling"):
     print("temp/downscaling : set")
 
 print("\n************************************************\n" + \
-      "Vocal2labに必要なライブラリをインストールします" + \
+      "Vocal2labに必要なライブラリをインストール中..." + \
       "\n************************************************\n")
 
 subprocess.check_output(["pip3", "install", "-r", "requirements.txt"], cwd="./")
