@@ -1,31 +1,26 @@
+# coding: UTF-8
+# v0.0.1 (2022/03/05)
+
 import pysinsy
 import sys
 
 sinsy = pysinsy.Sinsy()
 
-if len(sys.argv) != 4:
-    sys.exit("music2lab.py [input_filename] [output_filename] [generate / train]")
-input_filename = "./xml_in/" + sys.argv[1]
-output_filename = "./lab_out/" + sys.argv[2]
-mode = sys.argv[3]
+if len(sys.argv) != 3:
+    sys.exit("music2lab.py [入力ファイル名] [出力ファイル名]")
+input_filename = "./xml_in/" + sys.argv[1] + ".musicxml"
+output_filename = "./lab_out/" + sys.argv[2] + ".lab"
 
 assert sinsy.setLanguages("j", pysinsy.get_default_dic_dir())
 assert sinsy.loadScoreFromMusicXML(input_filename)
 
-if mode == "train":
-    print("Make mono labels from musicxml")
-    is_mono = True
-elif mode == "generate":
-    print("Make full labels from musicxml")
-    is_mono = False
-else:
-    sys.exit("music2lab.py [input_filename] [output_filename] [generate / train]")
+is_mono = False
 
 labels = sinsy.createLabelData(is_mono, 1, 1).getData()
 for l in labels:
     print(l)
 
-print("Compleate")
+print("完了")
 
 with open(output_filename, "w") as f:
     for l in labels:
