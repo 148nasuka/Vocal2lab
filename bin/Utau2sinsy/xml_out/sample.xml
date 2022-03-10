@@ -1,0 +1,308 @@
+<?xml version='1.0' encoding='utf-8'?>
+<score-partwise>
+  <identification>
+    <encoding>
+      <software>utau2sinsy.pl version 0.16</software>
+      <encoding-date>2022-03-06</encoding-date>
+    </encoding>
+  </identification>
+  <part>
+    <measure>
+      <direction>
+        <sound tempo="120.00" />
+      </direction>
+      <attributes>
+        <divisions>480</divisions>
+        <time>
+          <beats>4</beats>
+          <beat-type>4</beat-type>
+        </time>
+      </attributes>
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>4</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>1920</duration>
+        <type>whole</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <rest />
+      </note>
+    </measure>
+    <measure number="2">
+      <note>
+        <pitch>
+          <step>E</step>
+          <octave>4</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>720</duration>
+        <type>quarter</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <dot />
+        <lyric default-y="-77">
+          <text>う</text>
+        </lyric>
+      </note>
+      <note>
+        <pitch>
+          <step>G</step>
+          <octave>4</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>240</duration>
+        <type>eighth</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <lyric default-y="-77">
+          <text>た</text>
+        </lyric>
+      </note>
+      <note>
+        <pitch>
+          <step>G</step>
+          <octave>4</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>480</duration>
+        <type>quarter</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <lyric default-y="-77">
+          <text>う</text>
+        </lyric>
+      </note>
+      <note>
+        <pitch>
+          <step>G</step>
+          <octave>4</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>240</duration>
+        <type>eighth</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <lyric default-y="-77">
+          <text>の</text>
+        </lyric>
+      </note>
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>4</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>240</duration>
+        <type>eighth</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <rest />
+      </note>
+    </measure>
+    <measure number="3">
+      <note>
+        <pitch>
+          <step>C</step>
+          <octave>5</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>480</duration>
+        <type>quarter</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <lyric default-y="-77">
+          <text>ふぁ</text>
+        </lyric>
+      </note>
+      <note>
+        <pitch>
+          <step>G</step>
+          <octave>4</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>240</duration>
+        <type>eighth</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <lyric default-y="-77">
+          <text>い</text>
+        </lyric>
+      </note>
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>4</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>120</duration>
+        <type>16th</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <lyric default-y="-77">
+          <text>い</text>
+        </lyric>
+      </note>
+      <note>
+        <pitch>
+          <step>G</step>
+          <octave>4</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>120</duration>
+        <type>16th</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <lyric default-y="-77">
+          <text>い</text>
+        </lyric>
+      </note>
+      <note>
+        <pitch>
+          <step>F</step>
+          <octave>4</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>480</duration>
+        <type>quarter</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <lyric default-y="-77">
+          <text>る</text>
+        </lyric>
+      </note>
+      <note>
+        <pitch>
+          <step>E</step>
+          <octave>4</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>240</duration>
+        <type>eighth</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <lyric default-y="-77">
+          <text>を</text>
+        </lyric>
+      </note>
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>4</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>240</duration>
+        <type>eighth</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <rest />
+      </note>
+    </measure>
+    <measure number="4">
+      <note>
+        <pitch>
+          <step>F</step>
+          <octave>4</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>720</duration>
+        <type>quarter</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <dot />
+        <lyric default-y="-77">
+          <text>し</text>
+        </lyric>
+      </note>
+      <note>
+        <pitch>
+          <step>E</step>
+          <octave>4</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>240</duration>
+        <type>eighth</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <lyric default-y="-77">
+          <text>ん</text>
+        </lyric>
+      </note>
+      <note>
+        <pitch>
+          <step>D</step>
+          <octave>4</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>720</duration>
+        <type>quarter</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <dot />
+        <lyric default-y="-77">
+          <text>し</text>
+        </lyric>
+      </note>
+      <note>
+        <pitch>
+          <step>B</step>
+          <octave>3</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>240</duration>
+        <type>eighth</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <lyric default-y="-77">
+          <text>い</text>
+        </lyric>
+      </note>
+    </measure>
+    <measure number="5">
+      <note>
+        <pitch>
+          <step>C</step>
+          <octave>4</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>1440</duration>
+        <type>half</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <dot />
+        <lyric default-y="-77">
+          <text>え</text>
+        </lyric>
+      </note>
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>4</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>480</duration>
+        <type>quarter</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <rest />
+      </note>
+    </measure>
+    <measure number="6">
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>4</octave>
+          <alter>0</alter>
+        </pitch>
+        <duration>1920</duration>
+        <type>whole</type>
+        <voice>1</voice>
+        <staff>1</staff>
+        <rest />
+      </note>
+    </measure>
+    <measure number="7" />
+  </part>
+</score-partwise>
