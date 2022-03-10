@@ -1,5 +1,5 @@
 # coding: UTF-8
-# v0.0.1 (2022/03/05)
+# v0.0.2 (2022/03/12)
 
 import os
 import shutil
@@ -8,33 +8,45 @@ import subprocess
 if not os.path.exists("../Data_in"):
     os.mkdir("../Data_in")
     print("Data_in : set")
+if not os.path.exists("../Data_in/NNSVS"):
+    os.mkdir("../Data_in/NNSVS")
+    print("Data_in/NNSVS : set")
+if not os.path.exists("../Data_in/ENUNU"):
+    os.mkdir("../Data_in/ENUNU")
+    print("Data_in/ENUNU : set")
 if not os.path.exists("../Data_out"):
     os.mkdir("../Data_out")
     print("Data_out : set")
 if not os.path.exists("../Data_out/error"):
     os.mkdir("../Data_out/error")
     print("Data_out/error : set")
-if not os.path.exists("../Music2lab/lab_out"):
-    os.mkdir("../Music2lab/lab_out")
+
+if not os.path.exists("../bin/Music2lab/lab_out"):
+    os.mkdir("../bin/Music2lab/lab_out")
     print("Music2lab/lab_out : set")
-if not os.path.exists("../Music2lab/xml_in"):
-    os.mkdir("../Music2lab/xml_in")
+if not os.path.exists("../bin/Music2lab/xml_in"):
+    os.mkdir("../bin/Music2lab/xml_in")
     print("Music2lab/xml_in : set")
-if not os.path.exists("../temp"):
-    os.mkdir("../temp")
+
+if not os.path.exists("../bin/Utau2sinsy/xml_out"):
+    os.mkdir("../bin/Utau2sinsy/xml_out")
+    print("Utau2sinsy/xml_out : set")
+
+if not os.path.exists("../bin/temp"):
+    os.mkdir("../bin/temp")
     print("temp : set")
-if not os.path.exists("../temp/convert"):
-    os.mkdir("../temp/convert")
+if not os.path.exists("../bin/temp/convert"):
+    os.mkdir("../bin/temp/convert")
     print("temp/convert : set")
-if not os.path.exists("../temp/downscaling"):
-    os.mkdir("../temp/downscaling")
+if not os.path.exists("../bin/temp/downscaling"):
+    os.mkdir("../bin/temp/downscaling")
     print("temp/downscaling : set")
 
 print("\n************************************************\n" + \
       "Vocal2labに必要なライブラリをインストール中..." + \
       "\n************************************************\n")
 
-subprocess.check_output(["pip3", "install", "-r", "requirements.txt"], cwd="./")
+subprocess.run(["pip3", "install", "-r", "requirements.txt"], stdout=True, cwd="./")
 
 print("\n**********************************************\n" + \
       "pysinsy 音素辞書ファイルの確認をします"
