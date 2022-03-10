@@ -1,5 +1,5 @@
 # coding: UTF-8
-# v0.0.1 (2022/03/05)
+# v0.0.2 (2022/03/12)
 
 import datetime
 import shutil
@@ -8,18 +8,27 @@ import sys
 import os
 
 if len(sys.argv) != 2:
-    sys.exit("ERROR : ラベル生成は以下のような入力になります\nMultiExecution.py [sampling rate(48000 or 96000)]")
+    sys.exit("ERROR : ラベル生成は以下のような入力になります\nMultiExecution.py [mode(nnsvs or enunu)]")
 
+input_sr_mode = sys.argv[1]
+if input_sr_mode == "nnsvs":
+    input_dir = "./Data_in/NNSVS/"
+elif input_sr_mode == "enunu":
+    input_dir = "./Data_in/ENUNU/"
 counter = 1
-input_dir = "./Data_in/"
 out_dir = "./Data_out/"
 input_files = []
-input_sr_mode = sys.argv[1]
 error_list = []
 error = 0
 
 dt_now = datetime.datetime.now()
-output_dir = "./Data_out/" + dt_now.strftime('%Y-%m-%d_%H-%M-%S')
+if input_sr_mode == "nnsvs":
+    output_dir = "./Data_out/" + dt_now.strftime('%Y-%m-%d_%H-%M-%S(NNSVS)')
+elif input_sr_mode == "enunu":
+    output_dir = "./Data_out/" + dt_now.strftime('%Y-%m-%d_%H-%M-%S(ENUNU)')
+else:
+    sys.exit("ERROR :正しい入力オプションを指定してください (nnsvs or enunu)")
+
 os.mkdir(output_dir)
 
 for file_name in os.listdir(input_dir):
@@ -38,7 +47,8 @@ for i in range(0, len(input_files)):
           "進捗 " + str(i + 1) + " / " + str(len(input_files)) + " (" + str(input_files[i]) + ")" + \
           "\n**************************\n")
     try:
-        subprocess.check_output(["python", "./Vocal2lab.py", input_files[i], input_files[i]], cwd="./")
+        subprocess.check_output(
+            ["python", "./Vocal2lab.py", input_files[i], input_files[i], input_sr_mode], cwd="./")
     except subprocess.CalledProcessError as e:
         error_list.append(str(input_files[i]))
         error += 1
@@ -60,12 +70,16 @@ for file_name in os.listdir(out_dir):
         print("データセット作成中 : " + file_name)
         os.mkdir(output_dir + "/" + file_name.split(".")[0])
         shutil.move("./Data_out/" + file_name, output_dir + "/" + file_name.split(".")[0])
-        if input_sr_mode == "48000":
-            shutil.copy("./Data_in/" + file_name.split(".")[0] + ".wav", output_dir + "/" + file_name.split(".")[0])
-        else:
-            shutil.copy("./temp/downscaling/" + file_name.split(".")[0] + ".wav",
+        if input_sr_mode == "nnsvs":
+            shutil.copy("./Data_in/NNSVS/" + file_name.split(".")[0] + ".wav",
                         output_dir + "/" + file_name.split(".")[0])
-        shutil.copy("./Data_in/" + file_name.split(".")[0] + ".musicxml", output_dir + "/" + file_name.split(".")[0])
+            shutil.copy("./Data_in/NNSVS/" + file_name.split(".")[0] + ".musicxml",
+                        output_dir + "/" + file_name.split(".")[0])
+        elif input_sr_mode == "enunu":
+            shutil.copy("./bin/temp/downscaling/" + file_name.split(".")[0] + ".wav",
+                        output_dir + "/" + file_name.split(".")[0])
+            shutil.copy("./Data_in/ENUNU/" + file_name.split(".")[0] + ".ust",
+                        output_dir + "/" + file_name.split(".")[0])
         i += 1
 
 print("\n**************************\n" + \
