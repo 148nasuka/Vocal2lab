@@ -1,7 +1,10 @@
 # Vocal2lab
 
-<p><a href="https://github.com/r9y9/nnsvs">NNSVS（Neural network-based singing voice synthesis）</a>向けの教師データ作成を支援する自動ラベリングツールです。<br>
-WindowsでのNNSVS(GPU)環境構築方法、本ツールの使い方は /Vocal2lab/Tutorial.pdf にて解説しています。
+<p><a href="https://github.com/r9y9/nnsvs">NNSVS</a>および<a href="https://github.com/oatsu-gh/enunu_training_kit">ENUNU Training Kit </a>向けの教師データ作成を支援する自動ラベリングツールです。<br>
+使用方法はそれぞれ<br>
+    <li>アーティスト向けチュートリアル(ENUNU).pdf ※準備中</li>
+    <li>研究者向けチュートリアル(NNSVS).pdf</li>
+    <p>をつけていますのでそちらを参照してください。
 </p><br>
 
 <h1>動作環境</h1>
@@ -10,17 +13,20 @@ WindowsでのNNSVS(GPU)環境構築方法、本ツールの使い方は /Vocal2l
 
 <li>Windows</li>
 
-<li>Python3.8</li>
+<li><a href = "https://www.python.org/downloads/windows/">Python3.8 </a></li>
 
-<li>Perl</li>
+<li><a href = "https://strawberryperl.com/">Perl</a></li>
 
 <h1>使い方</h1>
 
 <b><p>留意事項</b></p>
 
-<p>Vocal2labは ./Vocal2lab/Data_in/ 内のファイルに対してラベリングを行うことができます。</p>
-
-入力ファイル名は楽譜、音声共に同じ名前にして下さい。<br>入力形式は .musicxml（楽譜）.wav（音声）です。<br>出力形式は .lab（ラベル）です。</p><br>
+<p>Vocal2labは ./Vocal2lab/Data_in/[モード名]/ 内のファイルに対してラベリングを行うことができます。<br>
+入力ファイル名は楽譜、音声共に同じ名前にして下さい。</p>
+<b>入力形式</b><br>
+NNSVSモードの場合、楽譜データ（.xml / .musicxml）音声データ（.wav ※モノラル ）です。<br>
+ENUNUモードの場合、楽譜データ（.ust）音声データ（.wav ※モノラル）
+出力形式は .lab（ラベル）です。</p><br>
 
 <b>現状、下記の要素を含む入力は正しくラベリング出来ません。</p></b>
 
@@ -42,24 +48,23 @@ WindowsでのNNSVS(GPU)環境構築方法、本ツールの使い方は /Vocal2l
 <b><p>初回実行時のみ、管理者権限のターミナルで ./Vocal2lab/setup/ を開き、下記のコマンドを入力してください。<br>（必須PythonライブラリとSinsy音素辞書のインストールを自動で行います。）</p></b>
 
     python ./setup.py
-  </p>
 
 <h2>2. 実行方法</h2>
 
 <p><b>一つだけラベリングを実行する場合。</b><br>
     
-    python ./Vocal2lab.py [入力ファイル名]　[出力ファイル名]
+    python ./Vocal2lab.py [入力ファイル名]　[出力ファイル名] [モード(nnsvs / enunu)]
 
 <b>（ラベルデータは ./Data_out/　にラベル単体で保存されます。）</strong><br><br></p>
 
-<p><strong>一括ラベリングを実行する場合。</strong><br>
+<p><strong>一括ラベリングを実行する場合。(NNSVS)</strong><br>
     
-    python ./Vocal2lab.py --multi
+    python ./Vocal2lab.py --multi nnsvs
 </p>
 
-<p>（オプション）出力サンプリングレートを48kHzに揃える場合。<br>
+<p><strong>一括ラベリングを実行する場合。(ENUNU)</strong><br>
     
-    python ./Vocal2lab.py --multi ds
+    python ./Vocal2lab.py --multi enunu
 
 <b>（ラベルデータは ./Data_out/[実行日時]/　に楽譜、音声、ラベルのセットで保存されます。）</b><br><br></p>
 
@@ -72,7 +77,7 @@ WindowsでのNNSVS(GPU)環境構築方法、本ツールの使い方は /Vocal2l
 
 <p>出力ラベルは<a href="https://www.speech.kth.se/wavesurfer/man.html">WaveSurfer</a>で精度の確認と編集ができます。</p>
 
-<img src="./Github_img/WaveSurfer.jpg" alt="WaveSurfer" title="WaveSurfer">
+<img src="./bin/Github_img/WaveSurfer.jpg" alt="WaveSurfer" title="WaveSurfer">
 
 <h1>Vocal2labの構成（開発者向け）</h1>
 
@@ -80,10 +85,13 @@ WindowsでのNNSVS(GPU)環境構築方法、本ツールの使い方は /Vocal2l
 
 尚、構成は以下の図のようになっています。</p>
 
-<img src="./Github_img/Vocal2lab.jpg" alt="Vocal2lab" title="Vocal2lab">
+<img src="./bin/Github_img/Vocal2lab.jpg" alt="Vocal2lab" title="Vocal2lab">
 
-<p><br>今後の改善項目</p>
+<h1>更新履歴</h1>
+<b><p>v0.0.1</b></p>
+<li>初回公開</li>
+<li>NNSVS用教師データラベリングにのみ対応</li>
 
-<li>音声認識モデルの入力最大長の変更（現状20秒）</li>
-
-<li>捨て仮名表記への対応</li>
+<b><p>v0.0.2</b></p>
+<li>ENUNU用教師データラベリングをサポート</li>
+<li>NNSVSモードの入力に.xml形式をサポート</li>
