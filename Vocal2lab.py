@@ -55,7 +55,10 @@ if len(sys.argv) != 4:
 
 sinsy = pysinsy.Sinsy()
 if input_sr_mode == "nnsvs":
-    input_xml = "./Data_in/NNSVS/" + sys.argv[1] + ".musicxml"
+    if os.path.isfile("./Data_in/NNSVS/" + sys.argv[1] + ".musicxml"):
+        input_xml = "./Data_in/NNSVS/" + sys.argv[1] + ".musicxml"
+    else:
+        input_xml = "./Data_in/NNSVS/" + sys.argv[1] + ".xml"
     input_audio = "./Data_in/NNSVS/" + sys.argv[1] + ".wav"
 elif input_sr_mode == "enunu":
     input_xml = "./bin/Utau2sinsy/xml_out/" + sys.argv[1] + ".xml"

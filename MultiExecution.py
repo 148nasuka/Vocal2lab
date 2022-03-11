@@ -73,8 +73,12 @@ for file_name in os.listdir(out_dir):
         if input_sr_mode == "nnsvs":
             shutil.copy("./Data_in/NNSVS/" + file_name.split(".")[0] + ".wav",
                         output_dir + "/" + file_name.split(".")[0])
-            shutil.copy("./Data_in/NNSVS/" + file_name.split(".")[0] + ".musicxml",
-                        output_dir + "/" + file_name.split(".")[0])
+            if os.path.isfile("./Data_in/NNSVS/" + file_name.split(".")[0] + ".musicxml"):
+                shutil.copy("./Data_in/NNSVS/" + file_name.split(".")[0] + ".musicxml",
+                            output_dir + "/" + file_name.split(".")[0])
+            else:
+                shutil.copy("./Data_in/NNSVS/" + file_name.split(".")[0] + ".xml",
+                            output_dir + "/" + file_name.split(".")[0] + "/" + file_name.split(".")[0] + ".musicxml")
         elif input_sr_mode == "enunu":
             shutil.copy("./bin/temp/downscaling/" + file_name.split(".")[0] + ".wav",
                         output_dir + "/" + file_name.split(".")[0])
