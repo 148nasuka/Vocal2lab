@@ -43,10 +43,10 @@ $leave_dict_flag=0;
 $debug_flag=0;
 
 ## julius executable
-$juliusbin=".\\bin\\julius-4.3.1.exe";
+$juliusbin=".\\bin\\julius.exe";
 
 ## acoustic model
-$hmmdefs="./models/hmmdefs_monof_mix16_gid.binhmm"; # monophone model
+$hmmdefs="./model/hmmdefs_monof_mix16_gid.binhmm"; # monophone model
 #$hmmdefs="./models/hmmdefs_ptm_gid.binhmm"; # triphone model
 
 ## HMMList file (needed for triphone model)
@@ -127,6 +127,7 @@ foreach $f (@files) {
 
     #### execute Julius and store the output to log
     $command = "echo $f.wav | $juliusbin -h $hmmdefs -dfa $f.dfa -v $f.dict";
+    #$command = "echo $f.wav | $juliusbin -C main.jconf -C am-dnn.jconf -dnnconf julius.dnnconf";
     $command .= " -palign";
     if ($hlist ne "") {
 	$command .= " -hlist $hlist";
