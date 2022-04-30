@@ -9,7 +9,7 @@
 
 <li>Windows</li>
 
-<li>C++コンパイル環境（VisualStudio C++拡張）</li>
+<li>C++コンパイル環境（VisualStudio C++）</li>
 
 <li><a href = "https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe">Python3.8 </a></li>
 
