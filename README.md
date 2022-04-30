@@ -13,7 +13,7 @@
 
 <li>Windows</li>
 
-<li><a href = "https://www.python.org/downloads/windows/">Python3.8 </a></li>
+<li><a href = "https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe">Python3.8 </a></li>
 
 <li><a href = "https://strawberryperl.com/">Perl</a></li>
 
